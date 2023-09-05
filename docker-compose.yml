@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app-i1:
+    build: .
+    image: cloud-app-23-2:1.0
+    ports:
+      - 3000:3000
+    environment:
+      INSTANCE: 1
+      PORT: 3000
+  app-i2:
+    build: .
+    image: cloud-app-23-2:1.0
+    ports:
+      - 3001:3001
+    environment:
+      INSTANCE: 2
+      PORT: 3001
+  balancer:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - app-i1
+      - app-i2
